@@ -9,8 +9,8 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 from langchain.callbacks import get_openai_callback
 import os
-OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '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')
-openai.api_key = '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'
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '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')
+openai.api_key = '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'
 
 def main():
     load_dotenv()
