@@ -33,6 +33,7 @@ def langchain_response(texts,embeddings,question):
     prompt_template = """Train yourself on provided data as below to answer questions and summarize the 
             output capturing full context. Think step by step before generating the response. 
             Please dont miss out any information that is relevant. Elaborate all related information available in the context in the answer
+            Be as detailed and elaborate as you can.
             context: {context}
             question: {question}
             Helpful Answer: """
