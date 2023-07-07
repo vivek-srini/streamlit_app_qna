@@ -83,7 +83,8 @@ def main():
       # show user input
       languages = ['English', 'Tamil','Hindi']
       selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
-      
+      prompt_template = st.text_input("Please enter the prompt you would like to use")
+      k = st.text_input("Please enter a value for k")
       user_question = st.text_input("Ask a question about your PDF:")
       if user_question:
         if selected_language == 'Tamil':
@@ -99,12 +100,10 @@ def main():
         # with get_openai_callback() as cb:
         #   response = chain.run(input_documents=docs, question=user_question)
         #   print(cb)
-        prompt_template = st.text_input("Please enter the prompt you would like to use")
-        k_input = st.text_input("Please enter a value for k")
+        
 
-        if k_input and prompt_template:
-          k = int(k_input)
-          response = langchain_response(chunks, embeddings, user_question, prompt_template, k)
+       
+        response = langchain_response(chunks, embeddings, user_question, prompt_template, int(k))
 
         if selected_language=="Hindi":
             t5 = time.time()
