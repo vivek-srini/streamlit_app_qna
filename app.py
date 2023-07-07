@@ -11,22 +11,7 @@ from langchain.callbacks import get_openai_callback
 import os
 openai_api_key = os.environ.get('OPENAI_API_KEY')
 from mtranslate import translate
-import speech_recognition as sr
-def transcribe_speech():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        st.write("Speak your question:")
-        audio = r.listen(source)
-    try:
-        question = r.recognize_google(audio)
-        st.write("You said:", question)
-        return question
-    except sr.UnknownValueError:
-        st.write("Sorry, I could not understand your speech.")
-        return None
-    except sr.RequestError as e:
-        st.write("Sorry, an error occurred. Please try again later.")
-        return None
+
 def translate_tamil_to_english(text):
     translated_text = translate(text, 'en', 'ta')
     return translated_text
@@ -73,9 +58,7 @@ def main():
         elif selected_language == 'Hindi':
             user_question = translate_hindi_to_english(user_question)
         
-        use_speech_input = st.checkbox("Use speech input")
-        if use_speech_input:
-            user_question = transcribe_speech()  
+         
         docs = knowledge_base.similarity_search(user_question)
         
         llm = OpenAI(temperature=0,openai_api_key=openai_api_key)
