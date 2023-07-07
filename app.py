@@ -32,7 +32,7 @@ def langchain_response(texts,embeddings,question):
     db = FAISS.from_texts(texts, embeddings)
     prompt_template = """Train yourself on provided data as below to answer questions and summarize the 
             output capturing full context. Think step by step before generating the response. 
-            Please dont miss out any information that is relevant. Include all related information in the answer
+            Please dont miss out any information that is relevant. Elaborate all related information available in the context in the answer
             context: {context}
             question: {question}
             Helpful Answer: """
