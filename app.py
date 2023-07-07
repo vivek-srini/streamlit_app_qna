@@ -26,7 +26,7 @@ def langchain_response(texts,embeddings):
     prompt = PromptTemplate(template=prompt_template, input_variables=['context',"question"])
     type_kwargs = {"prompt": prompt}
     retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":k})
-    qa = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,max_tokens=600,openai_api_key = openai_api_key, chain_type="stuff",retriever=retriever, chain_type_kwargs=type_kwargs)
+    qa = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,max_tokens=600,openai_api_key = openai_api_key), chain_type="stuff",retriever=retriever, chain_type_kwargs=type_kwargs)
     result = qa({"query": question})
     return result["result"]
     
