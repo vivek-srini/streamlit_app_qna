@@ -12,6 +12,7 @@ from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import Chroma
 import os
+from langchain.chat_models import ChatOpenAI
 openai_api_key = os.environ.get('OPENAI_API_KEY')
 from mtranslate import translate
 
