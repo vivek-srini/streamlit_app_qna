@@ -28,18 +28,15 @@ def create_audio_file(text,language):
 def translate_tamil_to_english(text):
     translated_text = translate(text, 'en', 'ta')
     return translated_text
-def langchain_response(texts,embeddings,question):
+def langchain_response(texts,embeddings,question,prompt_template,k):
     db = FAISS.from_texts(texts, embeddings)
-    prompt_template = """Train yourself on provided data as below to answer questions and summarize the 
-            output capturing full context. Think step by step before generating the response. 
-            Please dont miss out any information that is relevant. Elaborate all related information available in the context in the answer
-            Be as detailed and elaborate as you can.
-            context: {context}
+    prompt_template = prompt_template + "\n" + """context: {context}
             question: {question}
             Helpful Answer: """
+            
     prompt = PromptTemplate(template=prompt_template, input_variables=['context',"question"])
     type_kwargs = {"prompt": prompt}
-    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":3})
+    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":k})
     qa = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,max_tokens=600,openai_api_key = openai_api_key), chain_type="stuff",retriever=retriever, chain_type_kwargs=type_kwargs)
     result = qa({"query": question})
     return result["result"]
@@ -102,8 +99,9 @@ def main():
         # with get_openai_callback() as cb:
         #   response = chain.run(input_documents=docs, question=user_question)
         #   print(cb)
-      
-        response = langchain_response(chunks,embeddings,user_question)
+        prompt_template = st.text_input("Please enter the prompt you would like to use")
+        k = st.text_input("Please enter a value for k")
+        response = langchain_response(chunks,embeddings,user_question,prompt_template,k)
         if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
