@@ -149,7 +149,7 @@ def main():
             user_question = translate_hindi_to_english(user_question)
           t10 = time.time()
           response = langchain_response_without_prompt(chunks, embeddings, user_question)
-          print("Time taken by model: ",time.time()-t10)
+          st.write("Time taken by model: ",time.time()-t10)
           if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
