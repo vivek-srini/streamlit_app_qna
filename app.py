@@ -17,6 +17,8 @@ openai_api_key = os.environ.get('OPENAI_API_KEY')
 from mtranslate import translate
 from gtts import gTTS
 from io import BytesIO
+import time
+
 def create_audio_file(text,language):
   sound_file = BytesIO()
   tts = gTTS(text, lang=language)
@@ -97,9 +99,12 @@ def main():
         # with get_openai_callback() as cb:
         #   response = chain.run(input_documents=docs, question=user_question)
         #   print(cb)
+      
         response = langchain_response(chunks,embeddings,user_question)
         if selected_language=="Hindi":
+            t5 = time.time()
             response = translate_english_to_hindi(response)
+            print("Time taken for translation: ",time.time()-t5)
             audio_file = create_audio_file(response,"hi")
         elif selected_language=="Tamil":
             response = translate_english_to_tamil(response)
@@ -107,8 +112,10 @@ def main():
         else:
             response = response
             audio_file = create_audio_file(response,"en")
-        
+        t1 = time.time()
         st.audio(audio_file)
+        t2 = time.time()
+        print("Time taken for voiceover: ", t2-t1)
         st.write(response)
         
 
