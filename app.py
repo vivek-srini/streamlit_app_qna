@@ -28,8 +28,8 @@ def create_audio_file(text,language):
 def translate_tamil_to_english(text):
     translated_text = translate(text, 'en', 'ta')
     return translated_text
-def langchain_response(texts,embeddings,question,prompt_template,k):
-    db = FAISS.from_texts(texts, embeddings)
+def langchain_response(db,question,prompt_template,k):
+    
     prompt_template = prompt_template + "\n" + """context: {context}
             question: {question}
             Helpful Answer: """
@@ -95,7 +95,7 @@ def main():
       t12 = time.time()
       embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
       
-      #knowledge_base = FAISS.from_texts(chunks, embeddings)
+      db = FAISS.from_texts(chunks, embeddings)
       print("Time taken by Embeddings model: ",t12 - time.time())
       # show user input
       languages = ['English', 'Tamil','Hindi']
@@ -122,7 +122,7 @@ def main():
         
 
        
-          response = langchain_response(chunks, embeddings, user_question, prompt_template, k)
+          response = langchain_response(db, user_question, prompt_template, k)
           if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
@@ -148,7 +148,7 @@ def main():
           elif selected_language == 'Hindi':
             user_question = translate_hindi_to_english(user_question)
           t10 = time.time()
-          response = langchain_response_without_prompt(chunks, embeddings, user_question)
+          response = langchain_response_without_prompt(db, user_question)
           st.write("Time taken by model: ",time.time()-t10)
           if selected_language=="Hindi":
             t5 = time.time()
