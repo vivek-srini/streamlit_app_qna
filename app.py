@@ -100,8 +100,12 @@ def main():
         #   response = chain.run(input_documents=docs, question=user_question)
         #   print(cb)
         prompt_template = st.text_input("Please enter the prompt you would like to use")
-        k = st.text_input("Please enter a value for k")
-        response = langchain_response(chunks,embeddings,user_question,prompt_template,k)
+        k_input = st.text_input("Please enter a value for k")
+
+        if k_input and prompt_template:
+          k = int(k_input)
+          response = langchain_response(chunks, embeddings, user_question, prompt_template, k)
+
         if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
