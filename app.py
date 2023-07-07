@@ -17,9 +17,9 @@ openai_api_key = os.environ.get('OPENAI_API_KEY')
 from mtranslate import translate
 from gtts import gTTS
 from io import BytesIO
-def create_audio_file(text):
+def create_audio_file(text,language):
   sound_file = BytesIO()
-  tts = gTTS(text, lang='en')
+  tts = gTTS(text, lang=language)
   tts.write_to_fp(sound_file)
   return sound_file
 
@@ -100,9 +100,14 @@ def main():
         response = langchain_response(chunks,embeddings,user_question)
         if selected_language=="Hindi":
             response = translate_english_to_hindi(response)
+            audio_file = create_audio_file(response,"hi")
         elif selected_language=="Tamil":
             response = translate_english_to_tamil(response)
-        audio_file = create_audio_file(response)
+            audio_file = create_audio_file(response,"ta")
+        else:
+            response = response
+            audio_file = create_audio_file(response,"en")
+        
         st.audio(audio_file)
         st.write(response)
         
