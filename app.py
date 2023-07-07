@@ -30,7 +30,7 @@ def translate_tamil_to_english(text):
     return translated_text
 def langchain_response(texts,embeddings,question):
     db = FAISS.from_texts(texts, embeddings)
-    prompt_template = """Based on the context,please answer the question as elaborately as possible.
+    prompt_template = """Based on the context,please answer the question as elaborately as possible. Please provide information only from the context. Dont make things up on your own.
                 context: {context}
                 question: {question}
                 Helpful Answer: """
