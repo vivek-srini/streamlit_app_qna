@@ -10,7 +10,11 @@ from langchain.llms import OpenAI
 from langchain.callbacks import get_openai_callback
 import os
 openai_api_key = os.environ.get('OPENAI_API_KEY')
+from mtranslate import translate
 
+def translate_tamil_to_english(text):
+    translated_text = translate(text, 'en', 'ta')
+    return translated_text
 def main():
     load_dotenv()
     st.set_page_config(page_title="Ask your PDF")
@@ -40,8 +44,13 @@ def main():
       knowledge_base = FAISS.from_texts(chunks, embeddings)
       
       # show user input
+      languages = ['English', 'Tamil']
+      selected_language = st.selectbox('Select Language', languages)
+      
       user_question = st.text_input("Ask a question about your PDF:")
       if user_question:
+        if selected_language != 'English':
+            user_question = translate_tamil_to_english(user_question)
         docs = knowledge_base.similarity_search(user_question)
         
         llm = OpenAI(temperature=0,openai_api_key=openai_api_key)
