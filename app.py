@@ -120,7 +120,7 @@ def main():
         
 
        
-          response = langchain_response(chunks, embeddings, user_question, prompt_template, int(k))
+          response = langchain_response(chunks, embeddings, user_question, prompt_template, k)
           if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
