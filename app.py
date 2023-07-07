@@ -42,7 +42,7 @@ def langchain_response(db,question,prompt_template,k):
     return result["result"]
     
 def langchain_response_without_prompt(db,question):
-    db = FAISS.from_texts(texts, embeddings)
+   
     prompt_template = """Answer in as much detail as possible but dont make things up. Only use the information in the context."""
     prompt_template = prompt_template + "\n" + """context: {context}
             question: {question}
