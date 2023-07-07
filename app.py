@@ -19,7 +19,7 @@ from mtranslate import translate
 def translate_tamil_to_english(text):
     translated_text = translate(text, 'en', 'ta')
     return translated_text
-def langchain_response(texts,embeddings):
+def langchain_response(texts,embeddings,question):
     db = FAISS.from_texts(texts, embeddings)
     prompt_template = """Based on the context,please answer the question as elaborately as possible.
                 context: {context}
@@ -82,7 +82,7 @@ def main():
         # with get_openai_callback() as cb:
         #   response = chain.run(input_documents=docs, question=user_question)
         #   print(cb)
-        response = langchain_response(chunks,embeddings)
+        response = langchain_response(chunks,embeddings,user_question)
         st.write(response)
     
 
