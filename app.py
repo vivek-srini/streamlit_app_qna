@@ -121,7 +121,17 @@ def main():
 
        
           response = langchain_response(chunks, embeddings, user_question, prompt_template, int(k))
-
+          if selected_language=="Hindi":
+            t5 = time.time()
+            response = translate_english_to_hindi(response)
+            st.write("Time taken for translation: ",time.time()-t5)
+            audio_file = create_audio_file(response,"hi")
+          elif selected_language=="Tamil":
+            response = translate_english_to_tamil(response)
+            audio_file = create_audio_file(response,"ta")
+          else:
+            response = response
+            audio_file = create_audio_file(response,"en")
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         user_question = st.text_input("Ask a question about your PDF:")
@@ -131,17 +141,17 @@ def main():
           elif selected_language == 'Hindi':
             user_question = translate_hindi_to_english(user_question)
           response = langchain_response_without_prompt(chunks, embeddings, user_question)
-      if selected_language=="Hindi":
-        t5 = time.time()
-        response = translate_english_to_hindi(response)
-        st.write("Time taken for translation: ",time.time()-t5)
-        audio_file = create_audio_file(response,"hi")
-      elif selected_language=="Tamil":
-        response = translate_english_to_tamil(response)
-        audio_file = create_audio_file(response,"ta")
-      else:
-        response = response
-        audio_file = create_audio_file(response,"en")
+          if selected_language=="Hindi":
+            t5 = time.time()
+            response = translate_english_to_hindi(response)
+            st.write("Time taken for translation: ",time.time()-t5)
+            audio_file = create_audio_file(response,"hi")
+          elif selected_language=="Tamil":
+            response = translate_english_to_tamil(response)
+            audio_file = create_audio_file(response,"ta")
+          else:
+            response = response
+            audio_file = create_audio_file(response,"en")
       t1 = time.time()
       st.audio(audio_file)
       t2 = time.time()
