@@ -97,7 +97,7 @@ def main():
       
       # show user input
       languages = ['English', 'Tamil','Hindi']
-      custom_params = st.checkbox('Use Custom Prompt and 'K')
+      custom_params = st.checkbox('Use Custom Prompt and K')
       if custom_params:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         prompt_template = st.text_input("Please enter the prompt you would like to use")
