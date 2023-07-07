@@ -104,7 +104,7 @@ def main():
         if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
-            print("Time taken for translation: ",time.time()-t5)
+            st.write("Time taken for translation: ",time.time()-t5)
             audio_file = create_audio_file(response,"hi")
         elif selected_language=="Tamil":
             response = translate_english_to_tamil(response)
@@ -115,7 +115,7 @@ def main():
         t1 = time.time()
         st.audio(audio_file)
         t2 = time.time()
-        print("Time taken for voiceover: ", t2-t1)
+        st.write("Time taken for voiceover: ", t2-t1)
         st.write(response)
         
 
