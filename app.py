@@ -15,6 +15,13 @@ import os
 from langchain.chat_models import ChatOpenAI
 openai_api_key = os.environ.get('OPENAI_API_KEY')
 from mtranslate import translate
+from gtts import gTTS
+from io import BytesIO
+def create_audio_file(text):
+  sound_file = BytesIO()
+  tts = gTTS(text, lang='en')
+  tts.write_to_fp(sound_file)
+  return sound_file
 
 def translate_tamil_to_english(text):
     translated_text = translate(text, 'en', 'ta')
@@ -95,8 +102,10 @@ def main():
             response = translate_english_to_hindi(response)
         elif selected_language=="Tamil":
             response = translate_english_to_tamil(response)
+        audio_file = create_audio_file(response)
+        st.audio(audio_file)
         st.write(response)
-    
+        
 
 if __name__ == '__main__':
     main()
