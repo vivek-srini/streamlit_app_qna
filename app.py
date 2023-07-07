@@ -41,6 +41,21 @@ def langchain_response(texts,embeddings,question,prompt_template,k):
     result = qa({"query": question})
     return result["result"]
     
+def langchain_response_without_prompt(texts,embeddings,question):
+    db = FAISS.from_texts(texts, embeddings)
+    prompt_template = """Answer in as much detail as possible but dont make things up. Only use the information in the context."""
+    prompt_template = prompt_template + "\n" + """context: {context}
+            question: {question}
+            Helpful Answer: """
+            
+    prompt = PromptTemplate(template=prompt_template, input_variables=['context',"question"])
+    type_kwargs = {"prompt": prompt}
+    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":int(3)})
+    qa = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,max_tokens=600,openai_api_key = openai_api_key), chain_type="stuff",retriever=retriever, chain_type_kwargs=type_kwargs)
+    result = qa({"query": question})
+    return result["result"]
+
+
 def translate_hindi_to_english(text):
     translated_text = translate(text,'en','hi')
     return translated_text
@@ -82,14 +97,16 @@ def main():
       
       # show user input
       languages = ['English', 'Tamil','Hindi']
-      selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
-      prompt_template = st.text_input("Please enter the prompt you would like to use")
-      k = st.text_input("Please enter a value for k")
-      user_question = st.text_input("Ask a question about your PDF:")
-      if user_question:
-        if selected_language == 'Tamil':
+      custom_params = st.checkbox('Use Custom Prompt and 'K')
+      if custom_params:
+        selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
+        prompt_template = st.text_input("Please enter the prompt you would like to use")
+        k = st.text_input("Please enter a value for k")
+        user_question = st.text_input("Ask a question about your PDF:")
+        if user_question:
+          if selected_language == 'Tamil':
             user_question = translate_tamil_to_english(user_question)
-        elif selected_language == 'Hindi':
+          elif selected_language == 'Hindi':
             user_question = translate_hindi_to_english(user_question)
         
          
@@ -103,24 +120,33 @@ def main():
         
 
        
-        response = langchain_response(chunks, embeddings, user_question, prompt_template, int(k))
+          response = langchain_response(chunks, embeddings, user_question, prompt_template, int(k))
 
-        if selected_language=="Hindi":
-            t5 = time.time()
-            response = translate_english_to_hindi(response)
-            st.write("Time taken for translation: ",time.time()-t5)
-            audio_file = create_audio_file(response,"hi")
-        elif selected_language=="Tamil":
-            response = translate_english_to_tamil(response)
-            audio_file = create_audio_file(response,"ta")
-        else:
-            response = response
-            audio_file = create_audio_file(response,"en")
-        t1 = time.time()
-        st.audio(audio_file)
-        t2 = time.time()
-        st.write("Time taken for voiceover: ", t2-t1)
-        st.write(response)
+      else:
+        selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
+        user_question = st.text_input("Ask a question about your PDF:")
+        if user_question:
+          if selected_language == 'Tamil':
+            user_question = translate_tamil_to_english(user_question)
+          elif selected_language == 'Hindi':
+            user_question = translate_hindi_to_english(user_question)
+          response = langchain_response_without_prompt(chunks, embeddings, user_question)
+      if selected_language=="Hindi":
+        t5 = time.time()
+        response = translate_english_to_hindi(response)
+        st.write("Time taken for translation: ",time.time()-t5)
+        audio_file = create_audio_file(response,"hi")
+      elif selected_language=="Tamil":
+        response = translate_english_to_tamil(response)
+        audio_file = create_audio_file(response,"ta")
+      else:
+        response = response
+        audio_file = create_audio_file(response,"en")
+      t1 = time.time()
+      st.audio(audio_file)
+      t2 = time.time()
+      st.write("Time taken for voiceover: ", t2-t1)
+      st.write(response)
         
 
 if __name__ == '__main__':
