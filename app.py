@@ -35,6 +35,14 @@ def langchain_response(texts,embeddings,question):
 def translate_hindi_to_english(text):
     translated_text = translate(text,'en','hi')
     return translated_text
+
+def translate_english_to_hindi(text):
+    translated_text = translate(text,'hi','en')
+    return translated_text
+
+def translate_english_to_tamil(text):
+    translated_text = translate(text,'ta','en')
+    return translated_text
 def main():
     load_dotenv()
     st.set_page_config(page_title="Ask your PDF")
@@ -83,6 +91,10 @@ def main():
         #   response = chain.run(input_documents=docs, question=user_question)
         #   print(cb)
         response = langchain_response(chunks,embeddings,user_question)
+        if selected_language=="Hindi":
+            response = translate_english_to_hindi(response)
+        elif selected_language=="Tamil":
+            response = translate_english_to_tamil(response)
         st.write(response)
     
 
