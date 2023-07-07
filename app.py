@@ -132,6 +132,11 @@ def main():
           else:
             response = response
             audio_file = create_audio_file(response,"en")
+          t1 = time.time()
+          st.audio(audio_file)
+          t2 = time.time()
+          st.write("Time taken for voiceover: ", t2-t1)
+          st.write(response)
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         user_question = st.text_input("Ask a question about your PDF:")
@@ -152,11 +157,11 @@ def main():
           else:
             response = response
             audio_file = create_audio_file(response,"en")
-      t1 = time.time()
-      st.audio(audio_file)
-      t2 = time.time()
-      st.write("Time taken for voiceover: ", t2-t1)
-      st.write(response)
+          t1 = time.time()
+          st.audio(audio_file)
+          t2 = time.time()
+          st.write("Time taken for voiceover: ", t2-t1)
+          st.write(response)
         
 
 if __name__ == '__main__':
