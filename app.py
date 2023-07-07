@@ -30,10 +30,13 @@ def translate_tamil_to_english(text):
     return translated_text
 def langchain_response(texts,embeddings,question):
     db = FAISS.from_texts(texts, embeddings)
-    prompt_template = """Based on the context,please answer the question as elaborately as possible. Please provide information only from the context. Dont make things up on your own.
-                context: {context}
-                question: {question}
-                Helpful Answer: """
+    prompt_template = """Train yourself on provided data as below to answer questions and summarize the 
+            output in bullet points capturing full context. Think step by step before generating the response. 
+            If you don't find an answer in the training dataset, then give a blank output. Answer keeping in mind the context 
+            of question asked
+            context: {context}
+            question: {question}
+            Helpful Answer: """
     prompt = PromptTemplate(template=prompt_template, input_variables=['context',"question"])
     type_kwargs = {"prompt": prompt}
     retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":2})
