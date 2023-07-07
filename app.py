@@ -92,9 +92,11 @@ def main():
       chunks = text_splitter.split_text(text)
       
       # create embeddings
+      t12 = time.time()
       embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
-      #knowledge_base = FAISS.from_texts(chunks, embeddings)
       
+      #knowledge_base = FAISS.from_texts(chunks, embeddings)
+      print("Time taken by Embeddings model: ",t12 - time.time())
       # show user input
       languages = ['English', 'Tamil','Hindi']
       custom_params = st.checkbox('Use Custom Prompt and K')
@@ -145,7 +147,9 @@ def main():
             user_question = translate_tamil_to_english(user_question)
           elif selected_language == 'Hindi':
             user_question = translate_hindi_to_english(user_question)
+          t10 = time.time()
           response = langchain_response_without_prompt(chunks, embeddings, user_question)
+          print("Time taken by model: ",time.time()-t10)
           if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
