@@ -8,6 +8,8 @@ from langchain.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 from langchain.callbacks import get_openai_callback
+from langchain.prompts import PromptTemplate
+from langchain.vectorstores import Chroma
 import os
 openai_api_key = os.environ.get('OPENAI_API_KEY')
 from mtranslate import translate
@@ -15,7 +17,19 @@ from mtranslate import translate
 def translate_tamil_to_english(text):
     translated_text = translate(text, 'en', 'ta')
     return translated_text
-
+def langchain_response(texts,embeddings):
+    db = Chroma.from_documents(texts, embeddings)
+    prompt_template = """Based on the context,please answer the question as elaborately as possible.
+                context: {context}
+                question: {question}
+                Helpful Answer: """
+    prompt = PromptTemplate(template=prompt_template, input_variables=['context',"question"])
+    type_kwargs = {"prompt": prompt}
+    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":k})
+    qa = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,max_tokens=600,openai_api_key = openai_api_key, chain_type="stuff",retriever=retriever, chain_type_kwargs=type_kwargs)
+    result = qa({"query": question})
+    return result["result"]
+    
 def translate_hindi_to_english(text):
     translated_text = translate(text,'en','hi')
     return translated_text
@@ -45,7 +59,7 @@ def main():
       
       # create embeddings
       embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
-      knowledge_base = FAISS.from_texts(chunks, embeddings)
+      #knowledge_base = FAISS.from_texts(chunks, embeddings)
       
       # show user input
       languages = ['English', 'Tamil','Hindi']
@@ -59,14 +73,14 @@ def main():
             user_question = translate_hindi_to_english(user_question)
         
          
-        docs = knowledge_base.similarity_search(user_question)
+        # docs = knowledge_base.similarity_search(user_question)
         
-        llm = OpenAI(temperature=0,openai_api_key=openai_api_key)
-        chain = load_qa_chain(llm, chain_type="stuff",)
-        with get_openai_callback() as cb:
-          response = chain.run(input_documents=docs, question=user_question)
-          print(cb)
-           
+        # llm = OpenAI(temperature=0,openai_api_key=openai_api_key)
+        # chain = load_qa_chain(llm, chain_type="stuff",)
+        # with get_openai_callback() as cb:
+        #   response = chain.run(input_documents=docs, question=user_question)
+        #   print(cb)
+        response = langchain_response(chunks,embeddings)
         st.write(response)
     
 
