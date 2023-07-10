@@ -18,7 +18,7 @@ from mtranslate import translate
 from gtts import gTTS
 from io import BytesIO
 import time
-
+cache_df = pd.read_excel("cache.xlsx")
 def create_audio_file(text,language):
   sound_file = BytesIO()
   tts = gTTS(text, lang=language)
@@ -106,6 +106,7 @@ def main():
         k = st.text_input("Please enter a value for k")
         user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
+          cache_df["Question"] = user_question
           if selected_language == 'Tamil':
             user_question = translate_tamil_to_english(user_question)
           elif selected_language == 'Hindi':
@@ -139,10 +140,12 @@ def main():
           t2 = time.time()
           st.write("Time taken for voiceover: ", t2-t1)
           st.write(response)
+          cache_df["Answer"] = response
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         user_question = st.text_input("Ask a question about your PDF:")
         if user_question:
+          cache_df["Question"] = user_question
           if selected_language == 'Tamil':
             user_question = translate_tamil_to_english(user_question)
           elif selected_language == 'Hindi':
@@ -166,6 +169,7 @@ def main():
           t2 = time.time()
           st.write("Time taken for voiceover: ", t2-t1)
           st.write(response)
+          cache_df["Answer"] = response
         
 
 if __name__ == '__main__':
