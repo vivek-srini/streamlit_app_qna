@@ -80,3 +80,4 @@ zipp==3.15.0
 mtranslate
 gtts
 openpyxl
+mysql-connector-python
