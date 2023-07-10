@@ -19,6 +19,10 @@ from gtts import gTTS
 from io import BytesIO
 import time
 import pandas as pd
+import mysql.connector
+from mysql.connector import Error
+from sqlalchemy import create_engine
+import pandas as pd
 def read_from_db(db_name,table_name):
     conn = mysql.connector.connect(
     host='localhost',
