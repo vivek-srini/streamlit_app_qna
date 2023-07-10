@@ -141,6 +141,7 @@ def main():
           st.write("Time taken for voiceover: ", t2-t1)
           st.write(response)
           cache_df["Answer"] = response
+          cache_df.to_xlsx("cache.xlsx",index=False)
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         user_question = st.text_input("Ask a question about your PDF:")
@@ -170,6 +171,7 @@ def main():
           st.write("Time taken for voiceover: ", t2-t1)
           st.write(response)
           cache_df["Answer"] = response
+          cache_df.to_xlsx("cache.xlsx",index=False)
         
 
 if __name__ == '__main__':
