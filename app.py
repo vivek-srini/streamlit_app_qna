@@ -202,7 +202,7 @@ def main():
           st.write("Time taken for voiceover: ", t2-t1)
           st.write(response)
           df = read_from_db("qna_streamlit","questions_answers")
-          df = df.append({"Question":,orig_user_question:"Answer":response},ignore_index=True)
+          df = df.append({"Question":orig_user_question:"Answer":response},ignore_index=True)
           write_df_to_db(df,"qna_streamlit","questions_answers")
 
 if __name__ == '__main__':
