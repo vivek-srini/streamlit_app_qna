@@ -18,6 +18,7 @@ from mtranslate import translate
 from gtts import gTTS
 from io import BytesIO
 import time
+import pandas as pd
 cache_df = pd.read_excel("cache.xlsx")
 def create_audio_file(text,language):
   sound_file = BytesIO()
