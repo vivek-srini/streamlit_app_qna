@@ -19,7 +19,34 @@ from gtts import gTTS
 from io import BytesIO
 import time
 import pandas as pd
-cache_df = pd.read_excel("cache.xlsx")
+def read_from_db(db_name,table_name):
+    conn = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='plagueofdeath',
+    db=db_name
+    
+)
+    cursor = conn.cursor()
+    query = f"SELECT * FROM {table_name}"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    column_names = [column[0] for column in cursor.description]
+    df = pd.DataFrame(rows, columns=column_names)
+    return df
+
+def write_df_to_db(df,db_name,table_name):
+    conn = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='plagueofdeath',
+    db=db_name
+    
+)
+    engine = create_engine(f'mysql+mysqlconnector://root:plagueofdeath@localhost/{db_name}')
+   
+    df.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
+    conn.close()
 def create_audio_file(text,language):
   sound_file = BytesIO()
   tts = gTTS(text, lang=language)
@@ -107,7 +134,7 @@ def main():
         k = st.text_input("Please enter a value for k")
         user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
-          cache_df["Question"] = user_question
+          
           if selected_language == 'Tamil':
             user_question = translate_tamil_to_english(user_question)
           elif selected_language == 'Hindi':
@@ -141,13 +168,12 @@ def main():
           t2 = time.time()
           st.write("Time taken for voiceover: ", t2-t1)
           st.write(response)
-          cache_df["Answer"] = response
-          cache_df.to_excel("cache.xlsx",index=False)
+         
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         user_question = st.text_input("Ask a question about your PDF:")
         if user_question:
-          cache_df["Question"] = user_question
+          orig_user_question = user_question 
           if selected_language == 'Tamil':
             user_question = translate_tamil_to_english(user_question)
           elif selected_language == 'Hindi':
@@ -171,9 +197,9 @@ def main():
           t2 = time.time()
           st.write("Time taken for voiceover: ", t2-t1)
           st.write(response)
-          cache_df["Answer"] = response
-          cache_df.to_excel("cache.xlsx",index=False)
-        
+          df = read_from_db("qna_streamlit","questions_answers")
+          df = df.append({"Question":,orig_user_question:"Answer":response},ignore_index=True)
+          write_df_to_db(df,"qna_streamlit","questions_answers")
 
 if __name__ == '__main__':
     main()
