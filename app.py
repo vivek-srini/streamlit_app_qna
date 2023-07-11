@@ -27,18 +27,21 @@ import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 import speech_recognition as sr
 from audiorecorder import audiorecorder
+from pydub import AudioSegment
 def transcript_audio(audio_bytes):
- 
+  src=(audio_bytes)
+  sound = AudioSegment.from_mp3(src)
+  sound.export("file.wav", format="wav")
   r = sr.Recognizer()
 # Reading Audio file as source
 #  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
-  with sr.AudioFile(audio_bytes) as source:
-    audio_text = r.listen(source)
+  with sr.AudioFile("file.wav") as source:
+    audio_text = r.record(source)
 # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
    
         # using google speech recognition
     text = r.recognize_google(audio_text)
-  return text   
+  return text    
 
 # def read_from_db(db_name,table_name):
 #     conn = mysql.connector.connect(
@@ -158,7 +161,7 @@ def main():
             audio = audiorecorder("Click to record", "Recording...")
             if len(audio)>0:
                 st.audio(audio.tobytes())
-                wav_file = open("audio.wav", "wb")
+                wav_file = open("audio.mp3", "wb")
                 wav_file.write(audio.tobytes())
         if require_audio and len(audio)>0:
           user_question = transcript_audio("audio.wav")
