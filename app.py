@@ -157,7 +157,7 @@ def main():
             audio_bytes = audio_recorder()
             if audio_bytes:
                 st.audio(audio_bytes, format="audio/wav")
-            user_question = transcript_audio(audio_bytes)
+                user_question = transcript_audio(audio_bytes)
         else:
             user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
