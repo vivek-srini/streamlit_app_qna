@@ -26,7 +26,7 @@ import pandas as pd
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 import speech_recognition as sr
-
+from audiorecorder import audiorecorder
 def transcript_audio(audio_bytes):
  
   r = sr.Recognizer()
@@ -155,11 +155,13 @@ def main():
         k = st.text_input("Please enter a value for k")
         require_audio = st.checkbox('I would rather ask a question orally')
         if require_audio:
-            audio_bytes = audio_recorder()
-            if audio_bytes:
-                audio_input = st.audio(audio_bytes, format="audio/wav")
+            audio = audiorecorder("Click to record", "Recording...")
+            if len(audio)>0:
+                st.audio(audio.tobytes())
+                wav_file = open("audio.wav", "wb")
+                wav_file.write(audio.tobytes())
         if require_audio and audio_bytes:
-          user_question = transcript_audio(audio_input)
+          user_question = transcript_audio("audio.wav")
         else:
           user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
