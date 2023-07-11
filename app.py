@@ -23,6 +23,10 @@ import mysql.connector
 from mysql.connector import Error
 from sqlalchemy import create_engine
 import pandas as pd
+import streamlit as st
+from audio_recorder_streamlit import audio_recorder
+
+
 # def read_from_db(db_name,table_name):
 #     conn = mysql.connector.connect(
 #     host='localhost',
@@ -136,6 +140,9 @@ def main():
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         prompt_template = st.text_input("Please enter the prompt you would like to use")
         k = st.text_input("Please enter a value for k")
+        audio_bytes = audio_recorder()
+        if audio_bytes:
+            st.audio(audio_bytes, format="audio/wav")
         user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
           
