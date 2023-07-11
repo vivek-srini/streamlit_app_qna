@@ -81,3 +81,4 @@ mtranslate
 gtts
 openpyxl
 mysql-connector-python
+audio-recorder-streamlit
