@@ -160,7 +160,7 @@ def main():
                 st.audio(audio.tobytes())
                 wav_file = open("audio.wav", "wb")
                 wav_file.write(audio.tobytes())
-        if require_audio and audio_bytes:
+        if require_audio and len(audio)>0:
           user_question = transcript_audio("audio.wav")
         else:
           user_question = st.text_input("Ask a question about your PDF:")
