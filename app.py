@@ -28,6 +28,7 @@ from audio_recorder_streamlit import audio_recorder
 import speech_recognition as sr
 
 def transcript_audio(audio_bytes):
+ 
   r = sr.Recognizer()
 # Reading Audio file as source
 #  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
@@ -156,9 +157,9 @@ def main():
         if require_audio:
             audio_bytes = audio_recorder()
             if audio_bytes:
-                st.audio(audio_bytes, format="audio/wav")
+                audio_input = st.audio(audio_bytes, format="audio/wav")
         if require_audio and audio_bytes:
-          user_question = transcript_audio(audio_bytes)
+          user_question = transcript_audio(audio_input)
         else:
           user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
