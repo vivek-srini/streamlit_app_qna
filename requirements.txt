@@ -82,3 +82,4 @@ gtts
 openpyxl
 mysql-connector-python
 audio-recorder-streamlit
+SpeechRecognition
