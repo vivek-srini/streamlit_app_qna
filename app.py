@@ -25,7 +25,19 @@ from sqlalchemy import create_engine
 import pandas as pd
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
+import speech_recognition as sr
 
+def transcript_audio(audio_bytes):
+  r = sr.Recognizer()
+# Reading Audio file as source
+#  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
+  with sr.AudioFile(audio_bytes) as source:
+    audio_text = r.listen(source)
+# recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
+   
+        # using google speech recognition
+    text = r.recognize_google(audio_text)
+  return text   
 
 # def read_from_db(db_name,table_name):
 #     conn = mysql.connector.connect(
@@ -140,10 +152,14 @@ def main():
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         prompt_template = st.text_input("Please enter the prompt you would like to use")
         k = st.text_input("Please enter a value for k")
-        audio_bytes = audio_recorder()
-        if audio_bytes:
-            st.audio(audio_bytes, format="audio/wav")
-        user_question = st.text_input("Ask a question about your PDF:")
+        require_audio = st.checkbox('I would rather ask a question orally')
+        if require_audio:
+            audio_bytes = audio_recorder()
+            if audio_bytes:
+                st.audio(audio_bytes, format="audio/wav")
+            user_question = transcript_audio(audio_bytes)
+        else:
+            user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
           
           if selected_language == 'Tamil':
