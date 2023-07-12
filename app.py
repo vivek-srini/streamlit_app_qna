@@ -144,7 +144,9 @@ def main():
         if require_audio and len(audio)>0:
           
           user_question = transcript_english_audio("audio.mp3",selected_language)
-          st.write("Your Question/உங்கள் கேள்வி/आपका प्रश्न: ",user_question)
+          string_to_write = "Your Question/உங்கள் கேள்வி/आपका प्रश्न: "
+          st.write(string_to_write)
+          st.write(user_question)
           
         else:
           user_question = st.text_input("Ask a question about your PDF:/உங்கள் PDF பற்றிய கேள்வியைக் கேளுங்கள்:/अपने PDF के बारे में प्रश्न पूछें:")
@@ -184,6 +186,8 @@ def main():
           st.audio(audio_file)
           t2 = time.time()
           st.write("Time taken for voiceover: ", t2-t1)
+          response_string = "Answer/பதில்/उत्तर: "
+          st.write(response_string)
           st.write(response)
          
       else:
