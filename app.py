@@ -57,7 +57,7 @@ def create_audio_file(text,language):
 def translate_tamil_to_english(text):
     translated_text = translate(text, 'en', 'ta')
     return translated_text
-def langchain_response(db,question,prompt_template,k):
+def langchain_response(db,question,prompt_template):
     
     prompt_template = prompt_template + "\n" + """context: {context}
             question: {question}
@@ -65,7 +65,7 @@ def langchain_response(db,question,prompt_template,k):
             
     prompt = PromptTemplate(template=prompt_template, input_variables=['context',"question"])
     type_kwargs = {"prompt": prompt}
-    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":int(k)})
+    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":3})
     qa = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,max_tokens=600,openai_api_key = openai_api_key), chain_type="stuff",retriever=retriever, chain_type_kwargs=type_kwargs)
     result = qa({"query": question})
     return result["result"]
@@ -168,7 +168,7 @@ def main():
         
 
        
-          response = langchain_response(db, user_question, prompt_template, k)
+          response = langchain_response(db, user_question, prompt_template)
           if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
