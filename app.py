@@ -123,8 +123,8 @@ def main():
       # create embeddings
       t12 = time.time()
       embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
-      
-      db = FAISS.from_texts(chunks, embeddings)
+      embeddings_result = embeddings.embed_texts(chunks)
+      db = FAISS.from_embeddings(embeddings_result)
       print("Time taken by Embeddings model: ",t12 - time.time())
       # show user input
       languages = ['English', 'Tamil','Hindi']
