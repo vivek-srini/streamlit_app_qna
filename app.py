@@ -29,6 +29,7 @@ import speech_recognition as sr
 from audiorecorder import audiorecorder
 from pydub import AudioSegment
 import subprocess
+
 def transcript_english_audio(audio_bytes):
   subprocess.call(['ffmpeg', '-i', audio_bytes,
                  'file.wav'])
@@ -45,66 +46,6 @@ def transcript_english_audio(audio_bytes):
 
   return text 
 
-def transcript_hindi_audio(audio_bytes):
-  subprocess.call(['ffmpeg', '-i', audio_bytes,
-                 'file.wav'])
-  
-  r = sr.Recognizer()
-# Reading Audio file as source
-#  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
-  with sr.AudioFile("file.wav") as source:
-    audio_text = r.record(source)
-# recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
-   
-        # using google speech recognition
-    text = r.recognize_google(audio_text,language="hi-IN")
-    st.write(text)
-  return text   
-
-def transcript_tamil_audio(audio_bytes):
-  subprocess.call(['ffmpeg', '-i', audio_bytes,
-                 'file.wav'])
-  
-  r = sr.Recognizer()
-# Reading Audio file as source
-#  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
-  with sr.AudioFile("file.wav") as source:
-    audio_text = r.record(source)
-# recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
-   
-        # using google speech recognition
-    text = r.recognize_google(audio_text,language="ta-IN")
-    st.write(text)
-  return text   
-
-# def read_from_db(db_name,table_name):
-#     conn = mysql.connector.connect(
-#     host='localhost',
-#     user='root',
-#     password='plagueofdeath',
-#     db=db_name
-    
-# )
-#     cursor = conn.cursor()
-#     query = f"SELECT * FROM {table_name}"
-#     cursor.execute(query)
-#     rows = cursor.fetchall()
-#     column_names = [column[0] for column in cursor.description]
-#     df = pd.DataFrame(rows, columns=column_names)
-#     return df
-
-# def write_df_to_db(df,db_name,table_name):
-#     conn = mysql.connector.connect(
-#     host='localhost',
-#     user='root',
-#     password='plagueofdeath',
-#     db=db_name
-    
-# )
-#     engine = create_engine(f'mysql+mysqlconnector://root:plagueofdeath@localhost/{db_name}')
-   
-#     df.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
-#     conn.close()
 def create_audio_file(text,language):
   sound_file = BytesIO()
   tts = gTTS(text, lang=language)
