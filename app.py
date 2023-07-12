@@ -30,7 +30,7 @@ from audiorecorder import audiorecorder
 from pydub import AudioSegment
 import subprocess
 
-def transcript_english_audio(audio_bytes):
+def transcript_english_audio(audio_bytes,selected_language):
   if os.path.exists('file.wav'):
     os.remove('file.wav')
   subprocess.call(['ffmpeg', '-i', audio_bytes,
@@ -44,7 +44,7 @@ def transcript_english_audio(audio_bytes):
 # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
    
         # using google speech recognition
-    text = r.recognize_google(audio_text)
+    text = r.recognize_google(audio_text,language=selected_language[:2].lower()+"-IN")
   print(text)
   return text 
 
@@ -142,7 +142,7 @@ def main():
                 wav_file.write(audio.tobytes())
         if require_audio and len(audio)>0:
           
-          user_question = transcript_english_audio("audio.mp3")
+          user_question = transcript_english_audio("audio.mp3",selected_language)
           st.write(user_question)
           
         else:
