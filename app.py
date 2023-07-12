@@ -200,6 +200,7 @@ def main():
         if require_audio and len(audio)>0:
           if selected_language=="English":
             user_question = transcript_english_audio("audio.mp3")
+            st.write(user_question)
           elif selected_language=="Hindi":
             user_question = transcript_hindi_audio("audio.mp3")
           else:
