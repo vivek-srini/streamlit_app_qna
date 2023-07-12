@@ -151,8 +151,10 @@ def main():
           
           if selected_language == 'Tamil':
             user_question = translate_tamil_to_english(user_question)
+            st.write(user_question)
           elif selected_language == 'Hindi':
             user_question = translate_hindi_to_english(user_question)
+            st.write(user_question)
         
          
         # docs = knowledge_base.similarity_search(user_question)
