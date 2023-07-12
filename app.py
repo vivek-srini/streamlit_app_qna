@@ -174,7 +174,7 @@ def main():
           if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
-            st.write("Time taken for translation: ",time.time()-t5)
+           
             audio_file = create_audio_file(response,"hi")
           elif selected_language=="Tamil":
             response = translate_english_to_tamil(response)
@@ -185,7 +185,7 @@ def main():
           t1 = time.time()
           st.audio(audio_file)
           t2 = time.time()
-          st.write("Time taken for voiceover: ", t2-t1)
+         
           response_string = "Answer/பதில்/उत्तर: "
           st.write(response_string)
           st.write(response)
@@ -215,11 +215,11 @@ def main():
             user_question = translate_hindi_to_english(user_question)
           t10 = time.time()
           response = langchain_response_without_prompt(db, user_question)
-          st.write("Time taken by model: ",time.time()-t10)
+         
           if selected_language=="Hindi":
             t5 = time.time()
             response = translate_english_to_hindi(response)
-            st.write("Time taken for translation: ",time.time()-t5)
+            
             audio_file = create_audio_file(response,"hi")
           elif selected_language=="Tamil":
             response = translate_english_to_tamil(response)
@@ -230,7 +230,7 @@ def main():
           t1 = time.time()
           st.audio(audio_file)
           t2 = time.time()
-          st.write("Time taken for voiceover: ", t2-t1)
+         
           response_string = "Answer/பதில்/उत्तर: "
           st.write(response_string)
           st.write(response)
