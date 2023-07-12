@@ -31,7 +31,8 @@ from pydub import AudioSegment
 import subprocess
 
 def transcript_english_audio(audio_bytes):
-  os.delete('file.wav')
+  if os.path.exists('file.wav'):
+    os.remove('file.wav')
   subprocess.call(['ffmpeg', '-i', audio_bytes,
                  'file.wav'])
   
