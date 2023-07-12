@@ -85,4 +85,4 @@ audio-recorder-streamlit
 SpeechRecognition
 streamlit-audiorecorder
 pydub
-ffmpeg-python
+ffmpeg
