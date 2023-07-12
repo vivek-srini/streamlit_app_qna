@@ -129,11 +129,11 @@ def main():
       print("Time taken by Embeddings model: ",t12 - time.time())
       # show user input
       languages = ['English', 'Tamil','Hindi']
-      custom_params = st.checkbox('Use Custom Prompt and K')
+      custom_params = st.checkbox('Use Custom Prompt')
       if custom_params:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         prompt_template = st.text_input("Please enter the prompt you would like to use")
-        k = st.text_input("Please enter a value for k")
+        #k = st.text_input("Please enter a value for k")
         require_audio = st.checkbox('I would rather ask a question orally')
         if require_audio:
             audio = audiorecorder("Click to record", "Recording...")
@@ -148,7 +148,7 @@ def main():
           
         else:
           user_question = st.text_input("Ask a question about your PDF:")
-        if user_question and k:
+        if user_question:
           
           if selected_language == 'Tamil':
             user_question = translate_tamil_to_english(user_question)
