@@ -42,7 +42,7 @@ def transcript_english_audio(audio_bytes):
    
         # using google speech recognition
     text = r.recognize_google(audio_text)
-    st.write(text)
+  st.write(text)
   return text 
 
 def transcript_hindi_audio(audio_bytes):
