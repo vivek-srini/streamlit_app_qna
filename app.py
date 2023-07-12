@@ -43,7 +43,7 @@ def transcript_english_audio(audio_bytes):
    
         # using google speech recognition
     text = r.recognize_google(audio_text)
-
+  print(text)
   return text 
 
 def create_audio_file(text,language):
