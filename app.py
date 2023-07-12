@@ -226,6 +226,7 @@ def main():
           st.audio(audio_file)
           t2 = time.time()
           st.write("Time taken for voiceover: ", t2-t1)
+          response_string = "Answer/பதில்/उत्तर: "+"\n"+response
           st.write(response)
           # df = read_from_db("qna_streamlit","questions_answers")
           # df = df.append({"Question":orig_user_question,"Answer":response},ignore_index=True)
