@@ -84,5 +84,3 @@ mysql-connector-python
 audio-recorder-streamlit
 SpeechRecognition
 streamlit-audiorecorder
-pydub
-ffmpeg
