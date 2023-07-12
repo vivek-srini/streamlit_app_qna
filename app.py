@@ -29,7 +29,7 @@ import speech_recognition as sr
 from audiorecorder import audiorecorder
 from pydub import AudioSegment
 import subprocess
-def transcript_audio(audio_bytes):
+def transcript_english_audio(audio_bytes,selected_language):
   subprocess.call(['ffmpeg', '-i', audio_bytes,
                  'file.wav'])
   
@@ -43,7 +43,39 @@ def transcript_audio(audio_bytes):
         # using google speech recognition
     text = r.recognize_google(audio_text)
     st.write(text)
-  return text    
+  return text 
+
+def transcript_hindi_audio(audio_bytes):
+  subprocess.call(['ffmpeg', '-i', audio_bytes,
+                 'file.wav'])
+  
+  r = sr.Recognizer()
+# Reading Audio file as source
+#  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
+  with sr.AudioFile("file.wav") as source:
+    audio_text = r.record(source)
+# recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
+   
+        # using google speech recognition
+    text = r.recognize_google(audio_text,language="hi-IN")
+    st.write(text)
+  return text   
+
+def transcript_tamil_audio(audio_bytes):
+  subprocess.call(['ffmpeg', '-i', audio_bytes,
+                 'file.wav'])
+  
+  r = sr.Recognizer()
+# Reading Audio file as source
+#  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
+  with sr.AudioFile("file.wav") as source:
+    audio_text = r.record(source)
+# recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
+   
+        # using google speech recognition
+    text = r.recognize_google(audio_text,language="ta-IN")
+    st.write(text)
+  return text   
 
 # def read_from_db(db_name,table_name):
 #     conn = mysql.connector.connect(
@@ -166,7 +198,12 @@ def main():
                 wav_file = open("audio.mp3", "wb")
                 wav_file.write(audio.tobytes())
         if require_audio and len(audio)>0:
-          user_question = transcript_audio("audio.mp3")
+          if selected_language=="English":
+            user_question = transcript_english_audio("audio.mp3")
+          elif selected_language=="Hindi":
+            user_question = transcript_hindi_audio("audio.mp3")
+          else:
+            user_question = transcript_tamil_audio("audio.mp3")
         else:
           user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
