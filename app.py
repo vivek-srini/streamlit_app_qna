@@ -42,7 +42,7 @@ def transcript_english_audio(audio_bytes):
    
         # using google speech recognition
     text = r.recognize_google(audio_text)
-  st.write(text)
+
   return text 
 
 def transcript_hindi_audio(audio_bytes):
@@ -198,13 +198,10 @@ def main():
                 wav_file = open("audio.mp3", "wb")
                 wav_file.write(audio.tobytes())
         if require_audio and len(audio)>0:
-          if selected_language=="English":
-            user_question = transcript_english_audio("audio.mp3")
-            st.write(user_question)
-          elif selected_language=="Hindi":
-            user_question = transcript_hindi_audio("audio.mp3")
-          else:
-            user_question = transcript_tamil_audio("audio.mp3")
+          
+          user_question = transcript_english_audio("audio.mp3")
+          st.write(user_question)
+          
         else:
           user_question = st.text_input("Ask a question about your PDF:")
         if user_question and k:
