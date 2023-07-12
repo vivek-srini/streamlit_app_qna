@@ -132,11 +132,12 @@ def main():
       custom_params = st.checkbox('Use Custom Prompt')
       if custom_params:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
-        prompt_template = st.text_input("Please enter the prompt you would like to use")
+        prompt_template = st.text_input("Please enter the prompt you would like to use/
+தயவு செய்து நீங்கள் எங்களிடம் கேட்கும் prompt உள்ளிடவும்/कृपया वह prompt शामिल करें जो आप हमसे चाहेंगे")
         #k = st.text_input("Please enter a value for k")
-        require_audio = st.checkbox('I would rather ask a question orally')
+        require_audio = st.checkbox('I would rather ask a question orally/நான் வாய்மொழியாக ஒரு கேள்வியைக் கேட்பேன்/मैं मौखिक रूप से एक प्रश्न पूछना पसंद करूंगा')
         if require_audio:
-            audio = audiorecorder("Click to record", "Recording...")
+            audio = audiorecorder("Click to record/பதிவு செய்ய கிளிக் செய்யவும்/रिकॉर्ड करने के लिए क्लिक करें", "Click to stop once done recording.../பதிவு செய்தவுடன் நிறுத்த கிளிக் செய்யவும்.../रिकॉर्डिंग पूरी हो जाने पर रोकने के लिए क्लिक करें...")
             if len(audio)>0:
                 st.audio(audio.tobytes())
                 wav_file = open("audio.mp3", "wb")
@@ -147,7 +148,7 @@ def main():
           st.write(user_question)
           
         else:
-          user_question = st.text_input("Ask a question about your PDF:")
+          user_question = st.text_input("Ask a question about your PDF:/உங்கள் PDF பற்றிய கேள்வியைக் கேளுங்கள்:/अपने PDF के बारे में प्रश्न पूछें:")
         if user_question:
           
           if selected_language == 'Tamil':
@@ -188,9 +189,9 @@ def main():
          
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
-        require_audio = st.checkbox('I would rather ask a question orally')
+        require_audio = st.checkbox('I would rather ask a question orally/நான் வாய்மொழியாக ஒரு கேள்வியைக் கேட்பேன்/मैं मौखिक रूप से एक प्रश्न पूछना पसंद करूंगा')
         if require_audio:
-            audio = audiorecorder("Click to record", "Recording...")
+            audio = audiorecorder("Click to record/பதிவு செய்ய கிளிக் செய்யவும்/रिकॉर्ड करने के लिए क्लिक करें", "Click to stop once done recording.../பதிவு செய்தவுடன் நிறுத்த கிளிக் செய்யவும்.../रिकॉर्डिंग पूरी हो जाने पर रोकने के लिए क्लिक करें...")
             if len(audio)>0:
                 st.audio(audio.tobytes())
                 wav_file = open("audio.mp3", "wb")
@@ -200,7 +201,7 @@ def main():
           user_question = transcript_english_audio("audio.mp3",selected_language)
           st.write(user_question)
         else:
-          user_question = st.text_input("Ask a question about your PDF:")
+          user_question = st.text_input("Ask a question about your PDF:/உங்கள் PDF பற்றிய கேள்வியைக் கேளுங்கள்:/अपने PDF के बारे में प्रश्न पूछें:")
         if user_question:
           orig_user_question = user_question 
           if selected_language == 'Tamil':
