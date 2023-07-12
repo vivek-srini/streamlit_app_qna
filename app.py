@@ -198,8 +198,9 @@ def main():
         if require_audio and len(audio)>0:
           
           user_question = transcript_english_audio("audio.mp3",selected_language)
-          string_to_write = "Your Question/உங்கள் கேள்வி/आपका प्रश्न: " + "\n" + user_question
+          string_to_write = "Your Question/உங்கள் கேள்வி/आपका प्रश्न: "
           st.write(string_to_write)
+          st.write(user_question)
         else:
           user_question = st.text_input("Ask a question about your PDF:/உங்கள் PDF பற்றிய கேள்வியைக் கேளுங்கள்:/अपने PDF के बारे में प्रश्न पूछें:")
         if user_question:
@@ -228,6 +229,7 @@ def main():
           st.write("Time taken for voiceover: ", t2-t1)
           response_string = "Answer/பதில்/उत्तर: "+"\n"+response
           st.write(response_string)
+          st.write(response)
           # df = read_from_db("qna_streamlit","questions_answers")
           # df = df.append({"Question":orig_user_question,"Answer":response},ignore_index=True)
           # write_df_to_db(df,"qna_streamlit","questions_answers")
