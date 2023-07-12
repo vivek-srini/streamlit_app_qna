@@ -29,7 +29,7 @@ import speech_recognition as sr
 from audiorecorder import audiorecorder
 from pydub import AudioSegment
 import subprocess
-def transcript_english_audio(audio_bytes,selected_language):
+def transcript_english_audio(audio_bytes):
   subprocess.call(['ffmpeg', '-i', audio_bytes,
                  'file.wav'])
   
