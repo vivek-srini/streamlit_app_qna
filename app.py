@@ -28,10 +28,11 @@ from audio_recorder_streamlit import audio_recorder
 import speech_recognition as sr
 from audiorecorder import audiorecorder
 from pydub import AudioSegment
+import subprocess
 def transcript_audio(audio_bytes):
-  src=(audio_bytes)
-  sound = AudioSegment.from_mp3(src)
-  sound.export("file.wav", format="wav")
+  subprocess.call(['ffmpeg', '-i', audio_bytes,
+                 'file.wav'])
+  
   r = sr.Recognizer()
 # Reading Audio file as source
 #  listening  the  аudiо  file  аnd  stоre  in  аudiо_text  vаriаble
