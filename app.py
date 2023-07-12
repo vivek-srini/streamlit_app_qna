@@ -188,7 +188,19 @@ def main():
          
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
-        user_question = st.text_input("Ask a question about your PDF:")
+        require_audio = st.checkbox('I would rather ask a question orally')
+        if require_audio:
+            audio = audiorecorder("Click to record", "Recording...")
+            if len(audio)>0:
+                st.audio(audio.tobytes())
+                wav_file = open("audio.mp3", "wb")
+                wav_file.write(audio.tobytes())
+        if require_audio and len(audio)>0:
+          
+          user_question = transcript_english_audio("audio.mp3",selected_language)
+          st.write(user_question)
+        else:
+          user_question = st.text_input("Ask a question about your PDF:")
         if user_question:
           orig_user_question = user_question 
           if selected_language == 'Tamil':
