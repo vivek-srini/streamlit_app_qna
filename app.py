@@ -196,7 +196,7 @@ def main():
         if require_audio:
             audio = audiorecorder("Click to record/பதிவு செய்ய கிளிக் செய்யவும்/रिकॉर्ड करने के लिए क्लिक करें", "Click to stop once done recording.../பதிவு செய்தவுடன் நிறுத்த கிளிக் செய்யவும்.../रिकॉर्डिंग पूरी हो जाने पर रोकने के लिए क्लिक करें...")
             if len(audio)>0:
-                st.audio(audio.tobytes())
+                # st.audio(audio.tobytes())
                 wav_file = open("audio.mp3", "wb")
                 wav_file.write(audio.tobytes())
         if require_audio and len(audio)>0:
