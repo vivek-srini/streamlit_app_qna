@@ -70,7 +70,7 @@ def langchain_response(db,question,prompt_template,k):
     result = qa({"query": question})
     return result["result"]
     
-def langchain_response_without_prompt(db,question):
+def langchain_response_without_prompt(db,question,k):
    
     prompt_template = """Answer in as much detail as possible but dont make things up. Only use the information in the context."""
     prompt_template = prompt_template + "\n" + """context: {context}
@@ -79,7 +79,7 @@ def langchain_response_without_prompt(db,question):
             
     prompt = PromptTemplate(template=prompt_template, input_variables=['context',"question"])
     type_kwargs = {"prompt": prompt}
-    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":int(4)})
+    retriever = db.as_retriever(search_type="similarity", search_kwargs={"k":int(k)})
     qa = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,max_tokens=600,openai_api_key = openai_api_key), chain_type="stuff",retriever=retriever, chain_type_kwargs=type_kwargs)
     result = qa({"query": question})
     return result["result"]
@@ -193,6 +193,7 @@ def main():
       else:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         require_audio = st.checkbox('I would rather ask a question orally/நான் வாய்மொழியாக ஒரு கேள்வியைக் கேட்பேன்/मैं मौखिक रूप से एक प्रश्न पूछना पसंद करूंगा')
+        k = st.text_input("Enter a value for k")
         if require_audio:
             audio = audiorecorder("Click to record/பதிவு செய்ய கிளிக் செய்யவும்/रिकॉर्ड करने के लिए क्लिक करें", "Click to stop once done recording.../பதிவு செய்தவுடன் நிறுத்த கிளிக் செய்யவும்.../रिकॉर्डिंग पूरी हो जाने पर रोकने के लिए क्लिक करें...")
             if len(audio)>0:
@@ -214,7 +215,7 @@ def main():
           elif selected_language == 'Hindi':
             user_question = translate_hindi_to_english(user_question)
           t10 = time.time()
-          response = langchain_response_without_prompt(db, user_question)
+          response = langchain_response_without_prompt(db, user_question,k)
          
           if selected_language=="Hindi":
             t5 = time.time()
