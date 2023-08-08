@@ -133,7 +133,6 @@ def main():
       if custom_params:
         selected_language = st.selectbox('Select Language/மொழியை தேர்ந்தெடுங்கள்/भाषा चुने', languages)
         prompt_template = st.text_input("Please enter the prompt you would like to use/தயவு செய்து நீங்கள் எங்களிடம் கேட்கும் prompt உள்ளிடவும்/कृपया वह prompt शामिल करें जो आप हमसे चाहेंगे")
-        
         k = st.text_input("Please enter a value for k")
         require_audio = st.checkbox('I would rather ask a question orally/நான் வாய்மொழியாக ஒரு கேள்வியைக் கேட்பேன்/मैं मौखिक रूप से एक प्रश्न पूछना पसंद करूंगा')
         if require_audio:
