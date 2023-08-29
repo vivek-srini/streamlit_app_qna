@@ -29,6 +29,7 @@ import speech_recognition as sr
 from audiorecorder import audiorecorder
 from pydub import AudioSegment
 import subprocess
+import langchain
 langchain.verbose = False
 def transcript_english_audio(audio_bytes,selected_language):
   if os.path.exists('file.wav'):
